@@ -1,6 +1,11 @@
 <template>
   <div class="pt-10 px-10 flex justify-center align-middle">
   </div>
+  <div class="row justify-center align-middle">
+    <link rel="icon" type="image/x-icon" href="<%= BASE_URL %>favicon.png" />
+    <h1>$</h1>
+    <h1>Greedy</h1>
+  </div>
   <ConfigPane :farmerAcc="farmerAcc" />
   <div v-if="!wallet" class="text-center"></div>
   <div v-else>
@@ -78,7 +83,7 @@
         </div>
         <div class="right-buttons">
         <button
-          v-if="availableA > 0"
+          v-if="availableB > -2"
           class="enabled-button nes-btn huVjiU uxbuttonright"
           @click="claim"
         >
@@ -257,8 +262,8 @@ export default defineComponent({
     };
 
     const freshStart = async () => {
-       setModalContent("Welcome to Lux Metaverse Staking", "We are actively updating this interface/staking solution. But please note before staking to make sure all your NFT's are in the Target Vault before staking. The act of clicking 'Start Staking' will lock this NFT for 7 days in this vault you will not be able to unstake during this time.", "modal-neutral", true, false);     
-         showModal();
+      //  setModalContent("Welcome to Lux Metaverse Staking", "We are actively updating this interface/staking solution. But please note before staking to make sure all your NFT's are in the Target Vault before staking. The act of clicking 'Start Staking' will lock this NFT for 7 days in this vault you will not be able to unstake during this time.", "modal-neutral", true, false);     
+      //    showModal();
       if (getWallet() && getConnection()) {
         gf = await initGemFarm(getConnection(), getWallet()!);
         farmerIdentity.value = getWallet()!.publicKey?.toBase58();
