@@ -1,10 +1,7 @@
 <template>
   <div class="pt-10 px-10 flex justify-center align-middle">
-  </div>
-  <div class="row justify-center align-middle">
-    <link rel="icon" type="image/x-icon" href="<%= BASE_URL %>favicon.png" />
-    <h1>$</h1>
-    <h1>Greedy</h1>
+      <img src="../assets/favicon.png" style="width: 25%;"/><br/>
+      <!-- <img src="../assets/Greedy_white.png" style="width: 25%;"/><br/> -->
   </div>
   <ConfigPane :farmerAcc="farmerAcc" />
   <div v-if="!wallet" class="text-center"></div>
@@ -89,12 +86,12 @@
         >
         Claim {{ availableB  }} $GRDY
         </button>        
-        <button
+        <!-- <button
           v-if="availableA == 0"
           class="disabled-button nes-btn huVjiU uxbuttonright"
         >
           Withdraw {{ availableB   }} $GRDY
-        </button>
+        </button> -->
         </div>
         
         <div class="width100 flex justify-center huVjiU pt-5">          
