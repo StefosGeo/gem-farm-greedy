@@ -3,6 +3,7 @@
       <img src="../assets/favicon.png" style="width: 25%;"/><br/>
       <!-- <img src="../assets/Greedy_white.png" style="width: 25%;"/><br/> -->
   </div>
+  <ConfigFarm/>
   <ConfigPane :farmerAcc="farmerAcc" />
   <div v-if="!wallet" class="text-center"></div>
   <div v-else>
@@ -133,6 +134,7 @@ import useCluster, { BankAddr } from '@/composables/cluster';
 import { initGemFarm } from '@/common/gem-farm';
 import { PublicKey } from '@solana/web3.js';
 import ConfigPane from '@/components/ConfigPane.vue';
+import ConfigFarm from '@/components/ConfigFarm.vue';
 import FarmerDisplay from '@/components/gem-farm/FarmerDisplay.vue';
 import Vault from '@/components/gem-bank/Vault.vue';
 import { INFT } from '@/common/web3/NFTget';
@@ -140,7 +142,7 @@ import { findFarmerPDA, stringifyPKsAndBNs } from '@gemworks/gem-farm-ts';
 import Modal from "@/components/Modal.vue";
 
 export default defineComponent({
-  components: { Vault, FarmerDisplay, ConfigPane, Modal},
+  components: { Vault, FarmerDisplay, ConfigPane, Modal, ConfigFarm},
   setup(props, ctx) {
     const { wallet, getWallet } = useWallet();
     const { cluster, getConnection } = useCluster();
@@ -292,7 +294,11 @@ export default defineComponent({
           {           
             setModalContent("Submitting Transaction", "Creating new staking account: Transaction in Progress", "modal-neutral", false, true);    
              showModal();
-             const farmAddress = "Fw8hwJXuJR6hNQJdKW2ASrHoV4HnFyHMhmYig1hbDLn4"
+             const farmObj = {"Greedy Pigz": "Fw8hwJXuJR6hNQJdKW2ASrHoV4HnFyHMhmYig1hbDLn4",
+                              "Greedy Hogz": "DpYmHC5ZrkQLVDoVKMkUsgpq5FNpvphirTbctzRDtk47",
+                              "Mutant Zombies": "DpYmHC5ZrkQLVDoVKMkUsgpq5FNpvphirTbctzRDtk47"
+                             }
+             const farmAddress = farmObj["Greedy Pigz"]
               await gf.initFarmerWallet(new PublicKey(farmAddress));  
               await fetchFarmer();
           }
