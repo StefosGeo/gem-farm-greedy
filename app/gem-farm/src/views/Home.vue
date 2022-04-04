@@ -3,8 +3,32 @@
       <img src="../assets/favicon.png" style="width: 25%;"/><br/>
       <!-- <img src="../assets/Greedy_white.png" style="width: 25%;"/><br/> -->
   </div>
-  <ConfigFarm/>
-  <ConfigPane :farmerAcc="farmerAcc" />
+  <div v-if="choosenFarm==='unknown'">
+    <!-- <ConfigFarm/> -->
+    <div class="nes-container flex text-center mb-10 flex-wrap">
+    <div class="nes-select is-dark text-center flex-1 mb-10 width100">
+        <div v-if="choosenFarm==='unknown'">
+        <select required id="selectedFarm" name="selectedFarmeName" class="huVjiU choose-wallet" @change="onChangeFarm($event)" v-model="selectedFarmValue">
+            <option :value="unknown" :selected="true">Choose Farm..</option>
+            <option :value="Fw8hwJXuJR6hNQJdKW2ASrHoV4HnFyHMhmYig1hbDLn4"><div><img src="../assets/greedyHog.png"/><p>Greedy Pigz</p></div></option>
+            <option :value="DpYmHC5ZrkQLVDoVKMkUsgpq5FNpvphirTbctzRDtk47">Greedy Hogz</option>
+            <option :value="DpYmHC5ZrkQLVDoVKMkUsgpq5FNpvphirTbctzRDtk47">Mutant Zombies</option>
+        </select>
+        </div>
+        <div v-else>
+            <div v-if="choosenFarm==='Greedy Pigz'" class="selectedFarm row">
+                <img src="../assets/greedyPig.png" width="40" height="40" style="align-items=center"><span><b><h2>   {{ choosenFarm }}</h2></b></span>
+            </div>
+            <div v-else class="selectedFarm row"> 
+                <img src="../assets/greedyHog.png" width="40" height="40"><span><b><h2>   {{ choosenFarm }}</h2></b></span>
+            </div>
+        </div>
+        </div>
+  </div>
+  </div>
+  <div v-else>
+    <ConfigPane :farmerAcc="farmerAcc" />
+  </div>  
   <div v-if="!wallet" class="text-center"></div>
   <div v-else>
     <div v-if="farmerAcc">  
@@ -96,12 +120,12 @@
         </div>
         
         <div class="width100 flex justify-center huVjiU pt-5">          
-          <div v-if="fixedRate > 0" class="accrued-reward uxbuttonleft left-buttons" > Vault Deposited Rewards: {{(accruedReward - paidOutReward) / 1000000000}} $LUX</div>
+          <div v-if="fixedRate > 0" class="accrued-reward uxbuttonleft left-buttons" > Vault Deposited Rewards: {{(accruedReward - paidOutReward) / 1000000000}} $GRDY</div>
           <!-- <div v-if="paidOutReward" class="total-earned-reward" > paidOutReward: {{paidOutReward}}</div> -->
-          <div v-if="fixedRate > 0" class="currently-earning uxbuttonright right-buttons" > Currently generating: {{fixedRate / 1000000000}} $LUX per Week</div>
+          <div v-if="fixedRate > 0" class="currently-earning uxbuttonright right-buttons" > Currently generating: {{fixedRate / 1000000000}} $GRDY per Week</div>
         </div>
         <div class="width100 flex justify-center huVjiU pt-5">          
-          <div v-if="fixedRate > 0" class="accrued-reward uxbuttonleft left-buttons" > Estimated Pending Rewards: {{estFixedRate}} $LUX</div>
+          <div v-if="fixedRate > 0" class="accrued-reward uxbuttonleft left-buttons" > Estimated Pending Rewards: {{estFixedRate}} $GRDY</div>
           <!-- <div v-if="paidOutReward" class="total-earned-reward" > paidOutReward: {{paidOutReward}}</div> -->
           <div v-if="fixedRate > 0" class="currently-earning uxbuttonright right-buttons" > Staking Status: {{farmerState}}</div>
         </div>
@@ -140,6 +164,7 @@ import Vault from '@/components/gem-bank/Vault.vue';
 import { INFT } from '@/common/web3/NFTget';
 import { findFarmerPDA, stringifyPKsAndBNs } from '@gemworks/gem-farm-ts';
 import Modal from "@/components/Modal.vue";
+
 
 export default defineComponent({
   components: { Vault, FarmerDisplay, ConfigPane, Modal, ConfigFarm},
@@ -214,7 +239,8 @@ export default defineComponent({
     const availableA = ref<string>();
     const accruedA = ref<string>();
     const availableB = ref<string>();
-
+    // const choosenFarm = ref<string>();
+    let choosenFarm = "unknown";
     const VaultRef = ref<any>(null);
 
     //auto loading for when farm changes
@@ -260,6 +286,12 @@ export default defineComponent({
       );
     };
 
+    //@ts-ignore
+    const onChangeFarm = async (e) => {
+      choosenFarm = e.target.value
+      console.log(choosenFarm)
+      }
+
     const freshStart = async () => {
       //  setModalContent("Welcome to Lux Metaverse Staking", "We are actively updating this interface/staking solution. But please note before staking to make sure all your NFT's are in the Target Vault before staking. The act of clicking 'Start Staking' will lock this NFT for 7 days in this vault you will not be able to unstake during this time.", "modal-neutral", true, false);     
       //    showModal();
@@ -275,6 +307,7 @@ export default defineComponent({
         availableA.value = undefined;
         availableB.value = undefined;
         widthdrawNFTs.value = false;
+        // choosenFarm.value = undefined;
 
         try {          
           await fetchFarn();
@@ -540,7 +573,9 @@ export default defineComponent({
       paidOutReward,
       fixedRate,
       estFixedRate,
-      widthdrawNFTs
+      widthdrawNFTs,
+      choosenFarm,
+      onChangeFarm
     };
   },
 });
