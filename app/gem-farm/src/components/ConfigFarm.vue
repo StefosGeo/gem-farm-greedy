@@ -26,29 +26,22 @@
 import {  defineComponent } from 'vue';
 
 export default {
-  props: ['choosenFarm'],
-  created() {
-    // props are exposed on `this`
-    console.log(this.choosenFarm)
-  },
-  data() {
-      return {choosenFarmData: "unknown",
-              imgSrc : "unknown"
-            }
-  },
-  methods: {
-      onChange(event){
-          console.log(event.target.value)
-          this.choosenFarmData = event.target.value
-          if (this.choosenFarmData === "Greedy Hogz") {
-              this.imgSrc = "../assets/greedyHog.png"
-          }else {
-              this.imgSrc = "../assets/greedyPig.png"
-          }
-          
-        //   this.choosenFarm = event.target.value
-      }
-  }
+//   props: ['choosenFarm'],
+//   created() {
+//     // props are exposed on `this`
+//     // console.log(this.choosenFarm)
+//   },
+//   data() {
+//       return {choosenFarmData: "unknown",
+//               imgSrc : "unknown"
+//             }
+//   },
+//   methods: {
+//       onChange(event){
+    
+//         //   this.choosenFarm = event.target.value
+//       }
+//   }
 }
 </script>
 

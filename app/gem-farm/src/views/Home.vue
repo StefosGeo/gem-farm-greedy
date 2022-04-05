@@ -3,32 +3,30 @@
       <img src="../assets/favicon.png" style="width: 25%;"/><br/>
       <!-- <img src="../assets/Greedy_white.png" style="width: 25%;"/><br/> -->
   </div>
-  <div v-if="choosenFarm==='unknown'">
-    <!-- <ConfigFarm/> -->
-    <div class="nes-container flex text-center mb-10 flex-wrap">
-    <div class="nes-select is-dark text-center flex-1 mb-10 width100">
-        <div v-if="choosenFarm==='unknown'">
-        <select required id="selectedFarm" name="selectedFarmeName" class="huVjiU choose-wallet" @change="onChangeFarm($event)" v-model="selectedFarmValue">
-            <option :value="unknown" :selected="true">Choose Farm..</option>
-            <option :value="Fw8hwJXuJR6hNQJdKW2ASrHoV4HnFyHMhmYig1hbDLn4"><div><img src="../assets/greedyHog.png"/><p>Greedy Pigz</p></div></option>
-            <option :value="DpYmHC5ZrkQLVDoVKMkUsgpq5FNpvphirTbctzRDtk47">Greedy Hogz</option>
-            <option :value="DpYmHC5ZrkQLVDoVKMkUsgpq5FNpvphirTbctzRDtk47">Mutant Zombies</option>
-        </select>
-        </div>
-        <div v-else>
-            <div v-if="choosenFarm==='Greedy Pigz'" class="selectedFarm row">
-                <img src="../assets/greedyPig.png" width="40" height="40" style="align-items=center"><span><b><h2>   {{ choosenFarm }}</h2></b></span>
-            </div>
-            <div v-else class="selectedFarm row"> 
-                <img src="../assets/greedyHog.png" width="40" height="40"><span><b><h2>   {{ choosenFarm }}</h2></b></span>
-            </div>
-        </div>
-        </div>
+  <!-- <ConfigFarm/> -->
+  <div class="nes-container flex text-center mb-10 flex-wrap">
+  <div class="nes-select is-dark text-center flex-1 mb-10 width100 justify-center">
+      <div v-if="choosenFarm==='unknown'">
+      <select required id="selectedFarmDropdown" name="selectedFarmeName" class="huVjiU choose-wallet" @change="onChangeFarm($event)">
+          <option :value="unknown" :selected="true">Choose Farm..</option>
+          <option :value="Fw8hwJXuJR6hNQJdKW2ASrHoV4HnFyHMhmYig1hbDLn4"><div><img src="../assets/greedyHog.png"/><p>Greedy Pigz</p></div></option>
+          <option :value="DpYmHC5ZrkQLVDoVKMkUsgpq5FNpvphirTbctzRDtk47">Greedy Hogz</option>
+          <option :value="DpYmHC5ZrkQLVDoVKMkUsgpq5FNpvphirTbctzRDtk47">Mutant Zombies</option>
+      </select>
+      </div>
+      <div v-else>
+          <div v-if="choosenFarm==='Greedy Pigz'" class="selectedFarm justify-center">
+              <img src="../assets/greedyPig.png" width="50" height="50" style="vertical-align:middle">
+              <span><b><h1>{{ choosenFarm }}</h1></b></span>
+          </div>
+          <div v-else class="selectedFarm justify-center"> 
+              <img src="../assets/greedyHog.png" width="50" height="50" style="vertical-align:middle">
+              <span><b><h1>{{ choosenFarm }}</h1></b></span>
+          </div>
+          <ConfigPane :farmerAcc="farmerAcc" />
+      </div>
+      </div>
   </div>
-  </div>
-  <div v-else>
-    <ConfigPane :farmerAcc="farmerAcc" />
-  </div>  
   <div v-if="!wallet" class="text-center"></div>
   <div v-else>
     <div v-if="farmerAcc">  
@@ -164,6 +162,7 @@ import Vault from '@/components/gem-bank/Vault.vue';
 import { INFT } from '@/common/web3/NFTget';
 import { findFarmerPDA, stringifyPKsAndBNs } from '@gemworks/gem-farm-ts';
 import Modal from "@/components/Modal.vue";
+import { createProgramAddressSync } from '@project-serum/anchor/dist/cjs/utils/pubkey';
 
 
 export default defineComponent({
@@ -239,8 +238,9 @@ export default defineComponent({
     const availableA = ref<string>();
     const accruedA = ref<string>();
     const availableB = ref<string>();
-    // const choosenFarm = ref<string>();
-    let choosenFarm = "unknown";
+    const choosenFarm = ref<string>();
+    choosenFarm.value = "unknown";
+    // let choosenFarm = "unknown";
     const VaultRef = ref<any>(null);
 
     //auto loading for when farm changes
@@ -288,10 +288,15 @@ export default defineComponent({
 
     //@ts-ignore
     const onChangeFarm = async (e) => {
-      choosenFarm = e.target.value
+      choosenFarm.value = e.target.value
       console.log(choosenFarm)
+      onChangeFarmVerb()
+
       }
 
+    const onChangeFarmVerb = async () => {
+      console.log(choosenFarm)
+    }
     const freshStart = async () => {
       //  setModalContent("Welcome to Lux Metaverse Staking", "We are actively updating this interface/staking solution. But please note before staking to make sure all your NFT's are in the Target Vault before staking. The act of clicking 'Start Staking' will lock this NFT for 7 days in this vault you will not be able to unstake during this time.", "modal-neutral", true, false);     
       //    showModal();
@@ -581,4 +586,13 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.selectedFarm  { 
+        align-items: center;
+        display: flex;
+        vertical-align: middle;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+    }
+</style>
