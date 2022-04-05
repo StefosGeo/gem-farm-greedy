@@ -56,6 +56,7 @@
         class="mb-10"
         :vault="farmerAcc.vault.toBase58()"
         :farmerAcc="farmerAcc"
+        :nftAddress="nftAddress"
         @selected-wallet-nft="handleNewSelectedNFT"
         @selected-vault-nft="handleNewSelectedVaultNFT"
         ref= 'VaultRef'
@@ -240,6 +241,7 @@ export default defineComponent({
     const availableB = ref<string>();
     const choosenFarm = ref<string>();
     choosenFarm.value = "unknown";
+    const nftAddress = ref<string>();
     // let choosenFarm = "unknown";
     const VaultRef = ref<any>(null);
 
@@ -290,6 +292,12 @@ export default defineComponent({
     const onChangeFarm = async (e) => {
       choosenFarm.value = e.target.value
       console.log(choosenFarm)
+      if (choosenFarm.value === "Greedy Pigz"){
+          nftAddress.value = "6V8RNUMG7Lf7e6RS8ychTZHNcdgihNLfLJu1BFVj4GyZ"
+      }
+      else {
+          nftAddress.value = "BiegZRJuzntiEZWeyR26fLjubqPDFk7EPEa4JmNUB54K"    
+      }
       onChangeFarmVerb()
 
       }
@@ -336,7 +344,15 @@ export default defineComponent({
                               "Greedy Hogz": "DpYmHC5ZrkQLVDoVKMkUsgpq5FNpvphirTbctzRDtk47",
                               "Mutant Zombies": "DpYmHC5ZrkQLVDoVKMkUsgpq5FNpvphirTbctzRDtk47"
                              }
-             const farmAddress = farmObj["Greedy Pigz"]
+            let farmAddress = "unknown"
+            if (choosenFarm.value === "Greedy Pigz"){
+               farmAddress = "Fw8hwJXuJR6hNQJdKW2ASrHoV4HnFyHMhmYig1hbDLn4"
+            }
+            else {
+               farmAddress = "DpYmHC5ZrkQLVDoVKMkUsgpq5FNpvphirTbctzRDtk47"
+              
+            }
+            //  const farmAddress = farmObj[choosenFarm.value]
               await gf.initFarmerWallet(new PublicKey(farmAddress));  
               await fetchFarmer();
           }
@@ -580,6 +596,7 @@ export default defineComponent({
       estFixedRate,
       widthdrawNFTs,
       choosenFarm,
+      nftAddress,
       onChangeFarm
     };
   },

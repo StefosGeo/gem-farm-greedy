@@ -88,7 +88,8 @@ export default defineComponent({
   components: { ArrowButton, NFTGrid, VueCountdown},
   props: {
     vault: String,    
-    farmerAcc: { type: Object}
+    farmerAcc: { type: Object},
+    nftAddress: String
   },
   emits: ['selected-wallet-nft','selected-vault-nft'],
   
@@ -97,8 +98,8 @@ export default defineComponent({
     const { cluster, getConnection } = useCluster();
 
     // --------------------------------------- state
-
-    //current walet/vault state
+    console.log("Inside Vauld :", props.nftAddress)
+    //current walet/vault state 
     const currentWalletNFTs = ref<INFT[]>([]);
     const currentVaultNFTs = ref<INFT[]>([]);
     //selected but not yet moved over in FE
